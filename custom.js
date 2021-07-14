@@ -472,18 +472,25 @@ if(page_content.includes(viewstate_reg)){
 			generator_str = generator_str.replace(generator_reg, "");
 			generator_str = generator_str.split("\"")[0];
 			generator_str_hex = generator_str[6] + generator_str[7] + generator_str[4] + generator_str[5] + generator_str[2] + generator_str[3] + generator_str[0] + generator_str[1];
-			var test_key = hex_to_ascii("CB8860CE588A62A2CF9B0B2F48D2C8C31A6A40F0517268CEBCA431A3177B08FC53D818B82DEDCF015A71A0C4B817EA8FDCA2B3BDD091D89F2EDDFB3C06C0CB32");
+			var val_keys = ["CB8860CE588A62A2CF9B0B2F48D2C8C31A6A40F0517268CEBCA431A3177B08FC53D818B82DEDCF015A71A0C4B817EA8FDCA2B3BDD091D89F2EDDFB3C06C0CB32,2CC8E5C3B1812451A707FBAAAEAC9052E05AE1B858993660"]
 			if(mac_res == "SHA1"){
 				var hashSize = 20;
 				var enc_data = atob(view_str);
 				var dataSize = enc_data.length - hashSize;
 				var data_to_hash = enc_data.substr(0, enc_data.length - hashSize) + hex_to_ascii(generator_str_hex);
-				var computed_hash = Crypto.sha1_hmac(data_to_hash, test_key);
-				alert(computed_hash);
-				alert(hex_to_ascii(computed_hash) == enc_data.substr(enc_data.length - 20));
-
-
-				
+				for (let i = 0; i < val_keys.length; i++) {
+					if(val_keys[i].split(",").length == 2){
+						var val_key = val_keys[i].split(",")[0];
+						var dec_key = val_keys[i].split(",")[1];
+						var test_key = hex_to_ascii(val_key);
+						var computed_hash = Crypto.sha1_hmac(data_to_hash, test_key);
+						if(hex_to_ascii(computed_hash) == enc_data.substr(enc_data.length - 20)){
+							alert("Awwwwwwww Snap!!!!!!\nDecription Key: " + dec_key + "\nValidation Key: " + val_key);
+							console.log("Awwwwwwww Snap!!!!!!\nDecription Key: " + dec_key + "\nValidation Key: " + val_key);
+						}
+					}
+				}
+			
 			}
 		}
 
