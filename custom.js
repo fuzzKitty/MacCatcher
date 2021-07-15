@@ -1,4 +1,3 @@
-// Copyright 2011-2014, Mike Shema <mike@deadliestwebattacks.com>
 var Crypto = {};
 
 Crypto.sha1_hmac = function (msg, key) {
